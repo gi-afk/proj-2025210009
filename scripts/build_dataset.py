@@ -65,7 +65,7 @@ def main(argv=None) -> int:
 
     config.PROCESSED_DIR.mkdir(parents=True, exist_ok=True)
     out = config.PROCESSED_DIR / "dataset.csv"
-    df.to_csv(out, index=False)
+    df.to_csv(out, index=False, lineterminator="\n")
     print(f"Dataset written to {out} ({len(df)} windows)")
 
     quality = distance_match_quality(positives, matched)
@@ -85,7 +85,8 @@ def main(argv=None) -> int:
         "features": config.FEATURES,
     }
     summary_path = config.PROCESSED_DIR / "dataset_summary.json"
-    summary_path.write_text(json.dumps(summary, indent=2), encoding="utf-8")
+    with open(summary_path, "w", encoding="utf-8", newline="\n") as handle:
+        json.dump(summary, handle, indent=2)
     print(f"Summary written to {summary_path}")
 
     # Small, committed excerpt for offline smoke tests (15 + 15 + 15 windows).
@@ -95,7 +96,8 @@ def main(argv=None) -> int:
         df[df["negative_type"] == "distance_matched"].head(15),
     ])
     config.SAMPLE_DIR.mkdir(parents=True, exist_ok=True)
-    sample.to_csv(config.SAMPLE_DIR / "sample_dataset.csv", index=False)
+    sample.to_csv(config.SAMPLE_DIR / "sample_dataset.csv", index=False,
+                  lineterminator="\n")
     print(f"Sample excerpt written to {config.SAMPLE_DIR / 'sample_dataset.csv'}")
     return 0
 

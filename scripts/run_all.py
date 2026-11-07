@@ -85,8 +85,9 @@ def main(argv=None) -> int:
             "chr": subset["chr"],
             "label": y,
             "negative_type": neg_type,
-            "lr_score": oof["logistic_regression"],
-            "rf_score": oof["random_forest"],
+            # Round to remove last-bit floating point noise from parallel RF.
+            "lr_score": np.round(oof["logistic_regression"], 12),
+            "rf_score": np.round(oof["random_forest"], 12),
         }))
 
         # Ablations isolate the source of predictive signal.
@@ -109,30 +110,36 @@ def main(argv=None) -> int:
         }
 
     metrics_df = pd.DataFrame(metrics_rows)
-    metrics_df.to_csv(config.RESULTS_DIR / "metrics_table.csv", index=False)
+    metrics_df.to_csv(config.RESULTS_DIR / "metrics_table.csv", index=False,
+                      lineterminator="\n")
 
     tests = pd.concat([evaluation.feature_tests(df, t) for t in config.NEG_TYPES])
-    tests.to_csv(config.RESULTS_DIR / "feature_tests.csv", index=False)
+    tests.to_csv(config.RESULTS_DIR / "feature_tests.csv", index=False,
+                 lineterminator="\n")
 
     for neg_type in config.NEG_TYPES:
         pd.DataFrame({
             "feature": config.FEATURES,
             "lr_coefficient": importance[neg_type]["lr"].values,
             "rf_importance": importance[neg_type]["rf"].values,
-        }).to_csv(config.RESULTS_DIR / f"importance_{neg_type}.csv", index=False)
+        }).round(10).to_csv(config.RESULTS_DIR / f"importance_{neg_type}.csv",
+                            index=False, lineterminator="\n")
 
-    pd.concat(oof_frames).to_csv(config.RESULTS_DIR / "oof_predictions.csv", index=False)
+    pd.concat(oof_frames).to_csv(config.RESULTS_DIR / "oof_predictions.csv",
+                                 index=False, lineterminator="\n")
 
     frames_by_type = {f["negative_type"].iloc[0]: f for f in oof_frames}
     comparison = evaluation.compare_negative_sets(
         frames_by_type, n_boot=args.bootstrap)
-    (config.RESULTS_DIR / "negative_set_comparison.json").write_text(
-        json.dumps(comparison, indent=2), encoding="utf-8")
+    with open(config.RESULTS_DIR / "negative_set_comparison.json", "w",
+              encoding="utf-8", newline="\n") as handle:
+        json.dump(comparison, handle, indent=2)
 
     n_pos = int((df["label"] == 1).sum())
     genome_bp = dataset_summary.get("nuclear_genome_bp", 12_071_326)
     ppv = evaluation.ppv_table(oof_frames, genome_bp, n_pos, config.WINDOW)
-    ppv.to_csv(config.RESULTS_DIR / "ppv_table.csv", index=False)
+    ppv.round(10).to_csv(config.RESULTS_DIR / "ppv_table.csv", index=False,
+                        lineterminator="\n")
 
     plotting.plot_feature_distributions(
         df, tests, config.FIGURE_DIR / "fig1_feature_distributions.png")
@@ -143,7 +150,6 @@ def main(argv=None) -> int:
         config.FIGURE_DIR / "fig4_metrics_comparison.png")
 
     metadata = {
-        "runtime_seconds": round(time.time() - started, 1),
         "dataset": dataset_summary,
         "metrics": metrics_rows,
         "settings": {
@@ -161,15 +167,16 @@ def main(argv=None) -> int:
             },
         },
     }
-    (config.RESULTS_DIR / "metrics.json").write_text(
-        json.dumps(metadata, indent=2, ensure_ascii=False), encoding="utf-8")
+    with open(config.RESULTS_DIR / "metrics.json", "w", encoding="utf-8",
+              newline="\n") as handle:
+        json.dump(metadata, handle, indent=2, ensure_ascii=False)
 
     print("\nMain results")
     main_rows = metrics_df[metrics_df["analysis"] == "main"]
     print(main_rows[["negative_type", "model", "roc_auc", "pr_auc"]]
           .to_string(index=False))
-    print(f"\nDone in {metadata['runtime_seconds']} s. "
-          f"Figures: {config.FIGURE_DIR}")
+    runtime = time.time() - started
+    print(f"\nDone in {runtime:.1f} s. Figures: {config.FIGURE_DIR}")
     return 0
 
 
