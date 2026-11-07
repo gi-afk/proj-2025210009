@@ -1,0 +1,29 @@
+# Downloaded / generated data (never commit raw inputs)
+data/raw/*
+!data/raw/.gitkeep
+data/processed/*
+!data/processed/.gitkeep
+*.part
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.env
+.pytest_cache/
+.ipynb_checkpoints/
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Logs and local credentials
+*.log
+credentials*
+secrets*
+token*
+id_rsa*

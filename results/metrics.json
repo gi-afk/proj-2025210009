@@ -1,0 +1,176 @@
+{
+  "runtime_seconds": 55.2,
+  "dataset": {
+    "generated_on": "2026-11-07",
+    "window_bp": 500,
+    "seed": 2024,
+    "nuclear_genome_bp": 12071326,
+    "dataset": {
+      "n_windows": 1224,
+      "n_positives": 408,
+      "n_random_negatives": 408,
+      "n_matched_negatives": 408,
+      "chromosomes": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12",
+        "13",
+        "14",
+        "15",
+        "16"
+      ]
+    },
+    "distance_matching_quality": {
+      "pos_median_dist_bp": 88328.0,
+      "matched_median_dist_bp": 87775.0,
+      "median_abs_log1p_difference": 0.0100383815161873,
+      "p95_abs_log1p_difference": 0.020201206621974686,
+      "pos_fraction_within_10kb_of_landmark": 0.1053921568627451,
+      "matched_fraction_within_10kb_of_landmark": 0.1053921568627451
+    },
+    "positive_definition": "OriDB status == Confirmed, midpoint of annotated element",
+    "negative_definitions": {
+      "random": "uniform genome-wide window, >=1000 bp from any positive",
+      "distance_matched": "one per positive, same chromosome, matched distance to nearest centromere/telomere"
+    },
+    "features": [
+      "gc_content",
+      "at_content",
+      "acs_pwm_max",
+      "kmer3_entropy",
+      "dist_cen_tel_log"
+    ]
+  },
+  "metrics": [
+    {
+      "model": "logistic_regression",
+      "n_pos": 408,
+      "n_neg": 408,
+      "roc_auc": 0.8851042868127643,
+      "roc_auc_low": 0.8596962406286045,
+      "roc_auc_high": 0.908084630911188,
+      "pr_auc": 0.8912173580030718,
+      "pr_auc_low": 0.8645502824704868,
+      "pr_auc_high": 0.9146852782548971,
+      "negative_type": "random",
+      "analysis": "main"
+    },
+    {
+      "model": "random_forest",
+      "n_pos": 408,
+      "n_neg": 408,
+      "roc_auc": 0.8768682718185313,
+      "roc_auc_low": 0.8493956651287966,
+      "roc_auc_high": 0.9011448421280276,
+      "pr_auc": 0.878754310154368,
+      "pr_auc_low": 0.8505639502501123,
+      "pr_auc_high": 0.9044014758831024,
+      "negative_type": "random",
+      "analysis": "main"
+    },
+    {
+      "model": "lr_distance_only",
+      "n_pos": 408,
+      "n_neg": 408,
+      "roc_auc": 0.568618440023068,
+      "roc_auc_low": 0.5277489427143406,
+      "roc_auc_high": 0.6093734981737794,
+      "pr_auc": 0.5759609379076921,
+      "pr_auc_low": 0.5400831873042484,
+      "pr_auc_high": 0.6195958314705646,
+      "negative_type": "random",
+      "analysis": "ablation"
+    },
+    {
+      "model": "lr_sequence_only",
+      "n_pos": 408,
+      "n_neg": 408,
+      "roc_auc": 0.8798418877354863,
+      "roc_auc_low": 0.8540655937620145,
+      "roc_auc_high": 0.904136630142253,
+      "pr_auc": 0.8855108191254885,
+      "pr_auc_low": 0.856260570436196,
+      "pr_auc_high": 0.9094068894226705,
+      "negative_type": "random",
+      "analysis": "ablation"
+    },
+    {
+      "model": "logistic_regression",
+      "n_pos": 408,
+      "n_neg": 408,
+      "roc_auc": 0.8856869953863898,
+      "roc_auc_low": 0.8632339424740485,
+      "roc_auc_high": 0.9087750204248366,
+      "pr_auc": 0.8881787537714985,
+      "pr_auc_low": 0.863623810302086,
+      "pr_auc_high": 0.9137596306981156,
+      "negative_type": "distance_matched",
+      "analysis": "main"
+    },
+    {
+      "model": "random_forest",
+      "n_pos": 408,
+      "n_neg": 408,
+      "roc_auc": 0.8734080642060746,
+      "roc_auc_low": 0.8489185349384851,
+      "roc_auc_high": 0.8971513360246058,
+      "pr_auc": 0.8692537431587508,
+      "pr_auc_low": 0.8383968818325249,
+      "pr_auc_high": 0.9007537959525669,
+      "negative_type": "distance_matched",
+      "analysis": "main"
+    },
+    {
+      "model": "lr_distance_only",
+      "n_pos": 408,
+      "n_neg": 408,
+      "roc_auc": 0.49965758362168405,
+      "roc_auc_low": 0.4577371834150326,
+      "roc_auc_high": 0.5375468569780854,
+      "pr_auc": 0.5025152189599482,
+      "pr_auc_low": 0.4723289889214739,
+      "pr_auc_high": 0.5405044704654123,
+      "negative_type": "distance_matched",
+      "analysis": "ablation"
+    },
+    {
+      "model": "lr_sequence_only",
+      "n_pos": 408,
+      "n_neg": 408,
+      "roc_auc": 0.8863177623990773,
+      "roc_auc_low": 0.8642649461745482,
+      "roc_auc_high": 0.9090563124759707,
+      "pr_auc": 0.8898212362005425,
+      "pr_auc_low": 0.8660638385449366,
+      "pr_auc_high": 0.9152724378532449,
+      "negative_type": "distance_matched",
+      "analysis": "ablation"
+    }
+  ],
+  "settings": {
+    "window_bp": 500,
+    "seed": 2024,
+    "cv": "LeaveOneGroupOut over chromosomes (16 folds)",
+    "bootstrap_replicates": 1000,
+    "model_defaults": {
+      "logistic_regression": {
+        "C": 1.0,
+        "penalty": "l2"
+      },
+      "random_forest": {
+        "n_estimators": 300,
+        "min_samples_leaf": 5,
+        "max_features": "sqrt"
+      }
+    }
+  }
+}

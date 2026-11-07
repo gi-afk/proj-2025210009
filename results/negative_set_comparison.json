@@ -1,0 +1,26 @@
+{
+  "logistic_regression_roc_auc": {
+    "difference": -0.0005827085736255233,
+    "ci_low": -0.021572682381776093,
+    "ci_high": 0.01875916113994608,
+    "p_two_sided": 0.936
+  },
+  "logistic_regression_pr_auc": {
+    "difference": 0.0030386042315733164,
+    "ci_low": -0.02441934216843452,
+    "ci_high": 0.030594908035071033,
+    "p_two_sided": 0.848
+  },
+  "random_forest_roc_auc": {
+    "difference": 0.0034602076124566894,
+    "ci_low": -0.019296965109573315,
+    "ci_high": 0.024965758362168407,
+    "p_two_sided": 0.84
+  },
+  "random_forest_pr_auc": {
+    "difference": 0.009500566995617188,
+    "ci_low": -0.02608052150644487,
+    "ci_high": 0.044364184182610684,
+    "p_two_sided": 0.668
+  }
+}

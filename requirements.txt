@@ -1,0 +1,10 @@
+# Tested on Python 3.12 (Windows) with the versions noted in the comments.
+numpy>=1.26        # tested: 2.5.4
+pandas>=2.0        # tested: 3.1.1
+scipy>=1.11        # tested: 1.18.1
+scikit-learn>=1.4  # tested: 1.9.1
+matplotlib>=3.8    # tested: 3.11.2
+requests>=2.31     # tested: 2.32.5
+
+# Development / tests only
+pytest>=7.4
